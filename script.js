@@ -5,20 +5,19 @@ const submitButton = document.getElementById("submit-button");
 const responsesWrapper = document.getElementById("responses-wrapper");
 const exampleResponse = document.getElementsByClassName("response")[0];
 
-const responses = [];
+let RESPONSES = [];
 
-console.log(document.cookie);
-if (document.cookie.response) {
-  console.log(document.cookie.response);
+if (document.cookie) {
+  RESPONSES = JSON.parse(document.cookies.substring(10));
 }
+//const savedResponses = browser.cookie.get(responses);
+//console.log(savedResponses);
 
 const handleSubmit = async () => {
   const prompt = promptInput.value;
   if (prompt !== "") {
     const newResponse = await arrangeDataIntoResponseObject(prompt);
-    responses.unshift(newResponse);
     loadNewResponse(newResponse);
-    document.cookie = `responses=${JSON.stringify(responses)}`;
     promptInput.value = "";
   } else {
     window.alert("please enter a prompt!");
@@ -29,6 +28,19 @@ const handleTweet = () => {
   console.log(
     "In an ideal world this would prompt Twitter API OAuth and allow the user to tweet directly to their account."
   );
+};
+
+const handleSave = (response) => {
+  RESPONSES.unshift(response);
+  document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
+  console.log("saved");
+};
+
+const handleDelete = (response) => {
+  const filteredResponses = RESPONSES.filter(({ id }) => id === response.id);
+
+  RESPONSES = [...filteredResponses];
+  console.log("deleted");
 };
 
 const arrangeDataIntoResponseObject = async (prompt) => {
@@ -50,6 +62,7 @@ const arrangeDataIntoResponseObject = async (prompt) => {
   }
 
   const responseObject = {
+    id: Math.floor(Math.random() * 8),
     prompt: prompt,
     response: text,
   };
@@ -59,13 +72,35 @@ const arrangeDataIntoResponseObject = async (prompt) => {
 
 const loadNewResponse = (newResponse) => {
   const { prompt, response } = newResponse;
+
   const mostRecentResponse = document.getElementsByClassName("response")[0];
   const newResponseContainer = mostRecentResponse.cloneNode(true);
-  newResponseContainer.children[1].innerHTML = prompt;
-  newResponseContainer.children[3].innerHTML = `(${response.length})`;
-  newResponseContainer.children[4].innerHTML = response;
-  const tweetButton = newResponseContainer.children[5];
-  tweetButton.addEventListener("click", handleTweet);
+
+  const newPromptText = newResponseContainer.querySelector("#prompt-text");
+  const newResponseText = newResponseContainer.querySelector("#response-text");
+  const newResponseLength =
+    newResponseContainer.querySelector("#response-length");
+
+  const newSaveButton = newResponseContainer.querySelector("#save-button");
+  const newDeleteButton = newResponseContainer.querySelector("#delete-button");
+  const tweetButton = newResponseContainer.querySelector("#tweet-button");
+  newPromptText.innerHTML = prompt;
+  newResponseLength.innerHTML = `(${response.length})`;
+  newResponseText.innerHTML = response;
+
+  newSaveButton.addEventListener("click", handleSave);
+
+  newDeleteButton.addEventListener("click", () => {
+    if (responsesWrapper.children.length !== 1) {
+      handleDelete(newResponse);
+      newResponseContainer.remove();
+    }
+  });
+
+  tweetButton.addEventListener("click", () => {
+    handleTweet(newResponse);
+  });
+
   responsesWrapper.insertBefore(newResponseContainer, mostRecentResponse);
   if (exampleResponse) {
     exampleResponse.remove();

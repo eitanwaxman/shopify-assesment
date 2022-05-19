@@ -6,29 +6,58 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://kit.fontawesome.com/76fe7121e3.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./script.js"></script>
+  </head>
   <body>
-
     <h1>AI Tweet Generator</h1>
     <p>Welcome to the AI Tweet Generator!</p>
-    <p>Ask our super smart tweet-savvy computer to write you a tweet about any subject. </p>
-    
+    <p>
+      Ask our super smart tweet-savvy computer to write you a tweet about any
+      subject.
+    </p>
+
     <div class="input-wrapper">
-    <input class="input" id="prompt" placeholder="Write me a tweet about..."/>
-    <button class="button" id="submit-button">Submit</button>
+      <input
+        class="input"
+        id="prompt"
+        placeholder="Write me a tweet about..."
+      />
+      <button class="primary-button" id="submit-button">Submit</button>
     </div>
     <h2>Tweets</h2>
     <div class="responses-wrapper" id="responses-wrapper">
-
-        <div class="response">
-            <h4>Your Prompt</h4>
-                 <p> Write me a tweet about tweets</p>
-            <h3>AI Tweet</h3> 
-            <span>(186)</span>
-                <p>Tweets are like tiny little messages that you can send out to the world. They're a fun way to share your thoughts and ideas, and they can spread quickly. So why not start tweeting today?</p>
-            <button class="tweet-button">Tweet</button>
+      <div class="response">
+        <div class="icon-button-wrapper">
+          <button class="icon-button" id="save-button">
+            <span class="material-symbols-outlined"> save </span>
+          </button>
+          <button class="icon-button" id="delete-button">
+            <span class="material-symbols-outlined"> delete </span>
+          </button>
         </div>
-</div>
+        <h4>Your Prompt</h4>
+        <p id="prompt-text">Write me a tweet about tweets</p>
+        <h3>AI Tweet</h3>
+        <span id="response-length">(186)</span>
+        <p id="response-text">
+          Tweets are like tiny little messages that you can send out to the
+          world. They're a fun way to share your thoughts and ideas, and they
+          can spread quickly. So why not start tweeting today?
+        </p>
+        <button id="tweet-button" class="primary-button">
+          Tweet <i class="fab fa-twitter"></i>
+        </button>
+      </div>
+    </div>
   </body>
 </html>

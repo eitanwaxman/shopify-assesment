@@ -49,12 +49,20 @@ input {
   border: solid #1da1f2 2px;
 }
 
-input:focus {
-  background-color: #e1eff7;
-  outline: #006fb3;
+input:hover {
+  border: solid #1da1f2 2px;
+  outline: solid #006fb3 2px;
+  outline-offset: 4px;
 }
 
-button {
+input:focus {
+  background-color: #e1eff7;
+  border: solid #1da1f2 2px;
+  outline: solid #006fb3 2px;
+  outline-offset: 3px;
+}
+
+.primary-button {
   background-color: #1da1f2;
   font-weight: bold;
   color: white;
@@ -63,9 +71,21 @@ button {
   border-radius: 10px;
 }
 
-button:hover {
+.primary-button:hover {
   background-color: #006fb3;
   cursor: pointer;
+}
+
+.icon-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.icon-button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
 }
 
 .responses-wrapper {
@@ -77,10 +97,10 @@ button:hover {
 
 .response {
   margin: 10px;
-  padding: 20px;
+  padding: 15px;
   width: 400px;
   border-radius: 15px;
-  box-shadow: 1px 1px 3px 1px gray;
+  box-shadow: 1px 1px 3px 1px lightgray;
   background-image: linear-gradient(#e1eff7, white, white);
 }
 
