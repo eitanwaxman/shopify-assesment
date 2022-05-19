@@ -50,7 +50,6 @@ const handleSave = (response) => {
   const responseExists = RESPONSES.find(({ id }) => id === response, id);
   if (!responseExists) {
     RESPONSES.unshift(response);
-    console.log(RESPONSES);
     document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
     console.log("saved");
   } else {
@@ -60,8 +59,8 @@ const handleSave = (response) => {
 
 const handleDelete = (response) => {
   const filteredResponses = RESPONSES.filter(({ id }) => id === response.id);
-
   RESPONSES = [...filteredResponses];
+  document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
   console.log("deleted");
 };
 
