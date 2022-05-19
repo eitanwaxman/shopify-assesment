@@ -1,7 +1,3 @@
-console.log("hello world");
-console.log(document.cookie);
-//console.log(process.env.OPENAI_API_KEY);
-
 OPENAI_API_KEY = "sk-9iTykVyyk2ySOg3f4pX1T3" + "BlbkFJJnZXDWWanttEQH7YuEjr";
 
 const promptInput = document.getElementById("prompt");
@@ -11,13 +7,18 @@ const exampleResponse = document.getElementsByClassName("response")[0];
 
 const responses = [];
 
+console.log(document.cookie);
+if (document.cookie.response) {
+  console.log(document.cookie.response);
+}
+
 const handleSubmit = async () => {
   const prompt = promptInput.value;
   if (prompt !== "") {
     const newResponse = await arrangeDataIntoResponseObject(prompt);
     responses.unshift(newResponse);
     loadNewResponse(newResponse);
-    document.cookie = `responses=${responses}`;
+    document.cookie = `responses=${JSON.stringify(responses)}`;
     promptInput.value = "";
   } else {
     window.alert("please enter a prompt!");
