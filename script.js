@@ -15,7 +15,7 @@ const handleSubmit = async () => {
   const prompt = promptInput.value;
   if (prompt !== "") {
     const newResponse = await arrangeDataIntoResponseObject(prompt);
-    responses.shift(newResponse);
+    responses.unshift(newResponse);
     loadNewResponse(newResponse);
     document.cookie = `responses=${responses}`;
     promptInput.value = "";
