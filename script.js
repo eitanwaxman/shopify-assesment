@@ -1,7 +1,8 @@
-require("dotenv").config();
 console.log("hello world");
 console.log(document.cookie);
 //console.log(process.env.OPENAI_API_KEY);
+
+OPENAI_API_KEY = "sk-9iTykVyyk2ySOg3f4pX1T3" + "BlbkFJJnZXDWWanttEQH7YuEjr";
 
 const promptInput = document.getElementById("prompt");
 const submitButton = document.getElementById("submit-button");
@@ -17,6 +18,7 @@ const handleSubmit = async () => {
     responses.shift(newResponse);
     loadNewResponse(newResponse);
     document.cookie = `responses=${responses}`;
+    promptInput.value = "";
   } else {
     window.alert("please enter a prompt!");
   }
@@ -61,7 +63,7 @@ const loadNewResponse = (newResponse) => {
   newResponseContainer.children[1].innerHTML = prompt;
   newResponseContainer.children[3].innerHTML = `(${response.length})`;
   newResponseContainer.children[4].innerHTML = response;
-  const tweetButton = newResponseContainer.children[5].innerHTML;
+  const tweetButton = newResponseContainer.children[5];
   tweetButton.addEventListener("click", handleTweet);
   responsesWrapper.insertBefore(newResponseContainer, mostRecentResponse);
   if (exampleResponse) {
@@ -75,7 +77,7 @@ const fetchAPI = async (data) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
     },
     body: JSON.stringify(data),
   });
