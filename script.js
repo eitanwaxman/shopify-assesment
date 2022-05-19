@@ -9,18 +9,18 @@ let RESPONSES = [];
 let responsesCookie = "";
 
 const checkIfCookieExists = () => {
-  if (
-    document.cookie
-      .split(";")
-      .some((item) => item.trim().startsWith("responses="))
-  ) {
-    responsesCookie = item;
-    return responsesCookie;
-  }
+  let cookiesArray = document.cookie.split(";");
+  let responsesCookie;
+  cookiesArray.forEach((cookie) => {
+    if (cookie.trim().startsWith("responses=")) {
+      responsesCookie = cookie.trim().substring(10);
+    }
+  });
+  return responsesCookie;
 };
 
 if (checkIfCookieExists()) {
-  RESPONSES = JSON.parse(checkIfCookieExists().substring(10));
+  RESPONSES = JSON.parse(checkIfCookieExists());
 }
 
 console.log(RESPONSES);
