@@ -21,8 +21,9 @@ const checkIfCookieExists = () => {
 
 if (checkIfCookieExists()) {
   RESPONSES = JSON.parse(checkIfCookieExists().substring(10));
-  console.log(RESPONSES);
 }
+
+console.log(RESPONSES);
 //const savedResponses = browser.cookie.get(responses);
 //console.log(savedResponses);
 
@@ -102,7 +103,9 @@ const loadNewResponse = (newResponse) => {
   newResponseLength.innerHTML = `(${response.length})`;
   newResponseText.innerHTML = response;
 
-  newSaveButton.addEventListener("click", handleSave);
+  newSaveButton.addEventListener("click", () => {
+    handleSave(newResponse);
+  });
 
   newDeleteButton.addEventListener("click", () => {
     if (responsesWrapper.children.length !== 1) {
