@@ -12,7 +12,7 @@ const checkIfCookieExists = () => {
   if (
     document.cookie
       .split(";")
-      .some((item) => item.trim().startsWith("response="))
+      .some((item) => item.trim().startsWith("responses="))
   ) {
     responsesCookie = item;
     return responsesCookie;
@@ -77,7 +77,7 @@ const arrangeDataIntoResponseObject = async (prompt) => {
   }
 
   const responseObject = {
-    id: Math.floor(Math.random() * 8),
+    id: Math.floor(Math.random() * 100000000),
     prompt: prompt,
     response: text,
   };
