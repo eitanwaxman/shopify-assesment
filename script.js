@@ -6,9 +6,20 @@ const responsesWrapper = document.getElementById("responses-wrapper");
 const exampleResponse = document.getElementsByClassName("response")[0];
 
 let RESPONSES = [];
+let responsesCookie = "";
 
-if (document.cookie) {
-  RESPONSES = JSON.parse(document.cookies.substring(10));
+const checkIfCookieExists = () => {
+  if (
+    document.cookie
+      .split(";")
+      .some((item) => item.trim().startsWith("response="))
+  ) {
+    responsesCookie = item;
+  }
+};
+
+if (responsesCookie) {
+  RESPONSES = JSON.parse(responsesCookie.substring(10));
 }
 //const savedResponses = browser.cookie.get(responses);
 //console.log(savedResponses);
