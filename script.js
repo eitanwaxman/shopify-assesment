@@ -15,11 +15,13 @@ const checkIfCookieExists = () => {
       .some((item) => item.trim().startsWith("response="))
   ) {
     responsesCookie = item;
+    console.log(responsesCookie);
   }
 };
 
 if (responsesCookie) {
   RESPONSES = JSON.parse(responsesCookie.substring(10));
+  console.log(RESPONSES);
 }
 //const savedResponses = browser.cookie.get(responses);
 //console.log(savedResponses);
@@ -43,6 +45,7 @@ const handleTweet = () => {
 
 const handleSave = (response) => {
   RESPONSES.unshift(response);
+  console.log(RESPONSES);
   document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
   console.log("saved");
 };
