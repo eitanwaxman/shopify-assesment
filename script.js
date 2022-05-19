@@ -2,6 +2,7 @@ OPENAI_API_KEY = "sk-9iTykVyyk2ySOg3f4pX1T3" + "BlbkFJJnZXDWWanttEQH7YuEjr";
 
 const promptInput = document.getElementById("prompt");
 const submitButton = document.getElementById("submit-button");
+const loadTweetsButton = document.getElementById("load-tweets-button");
 const responsesWrapper = document.getElementById("responses-wrapper");
 const exampleResponse = document.getElementsByClassName("response")[0];
 
@@ -21,6 +22,7 @@ const checkIfCookieExists = () => {
 
 if (checkIfCookieExists()) {
   RESPONSES = JSON.parse(checkIfCookieExists());
+  loadTweetsButton.classList.remove("hidden");
 }
 
 console.log(RESPONSES);
@@ -45,10 +47,15 @@ const handleTweet = () => {
 };
 
 const handleSave = (response) => {
-  RESPONSES.unshift(response);
-  console.log(RESPONSES);
-  document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
-  console.log("saved");
+  const responseExists = RESPONSES.find(({ id }) => id === response, id);
+  if (!responseExists) {
+    RESPONSES.unshift(response);
+    console.log(RESPONSES);
+    document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
+    console.log("saved");
+  } else {
+    console.log("response exists");
+  }
 };
 
 const handleDelete = (response) => {
@@ -56,6 +63,12 @@ const handleDelete = (response) => {
 
   RESPONSES = [...filteredResponses];
   console.log("deleted");
+};
+
+const handleLoadTweets = () => {
+  RESPONSES.forEach((response) => {
+    loadNewResponse(response);
+  });
 };
 
 const arrangeDataIntoResponseObject = async (prompt) => {
@@ -139,6 +152,12 @@ const fetchAPI = async (data) => {
 };
 
 submitButton.addEventListener("click", handleSubmit);
+
+loadTweetsButton.addEventListener("click", () => {
+  handleLoadTweets();
+  loadTweetsButton.classList.add("hidden");
+});
+
 promptInput.addEventListener("click", () => {
   if (promptInput.value === "") {
     promptInput.value = "Write me a tweet about ";

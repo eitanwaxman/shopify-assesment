@@ -76,6 +76,22 @@ input:focus {
   cursor: pointer;
 }
 
+.secondary-button {
+  margin: 5px;
+  background-color: #e1eff7;
+  font-weight: bold;
+  color: black;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 10px;
+}
+
+.secondary-button:hover {
+  background-color: #006fb3;
+  color: white;
+  cursor: pointer;
+}
+
 .icon-button-wrapper {
   display: flex;
   flex-direction: row;
@@ -102,6 +118,10 @@ input:focus {
   border-radius: 15px;
   box-shadow: 1px 1px 3px 1px lightgray;
   background-image: linear-gradient(#e1eff7, white, white);
+}
+
+.hidden {
+  display: none;
 }
 
 @media only screen and (max-width: 600px) {
