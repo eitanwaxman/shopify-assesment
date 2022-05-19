@@ -15,12 +15,12 @@ const checkIfCookieExists = () => {
       .some((item) => item.trim().startsWith("response="))
   ) {
     responsesCookie = item;
-    console.log(responsesCookie);
+    return responsesCookie;
   }
 };
 
-if (responsesCookie) {
-  RESPONSES = JSON.parse(responsesCookie.substring(10));
+if (checkIfCookieExists()) {
+  RESPONSES = JSON.parse(checkIfCookieExists().substring(10));
   console.log(RESPONSES);
 }
 //const savedResponses = browser.cookie.get(responses);
