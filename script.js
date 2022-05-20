@@ -47,7 +47,8 @@ const handleTweet = () => {
 };
 
 const handleSave = (response) => {
-  const responseExists = RESPONSES.find(({ id }) => id === response, id);
+  const responseExists =
+    RESPONSES && RESPONSES.find(({ id }) => id === response, id);
   if (!responseExists) {
     RESPONSES.unshift(response);
     document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
