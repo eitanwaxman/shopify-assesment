@@ -10,13 +10,14 @@ const exampleTweet = document.getElementsByClassName("tweet")[0];
 
 let TWEETS = []; //tweets state
 let tweetCookie = "";
+const cookieName = "tweets=";
 
 const checkIfCookieExists = () => {
   let cookiesArray = document.cookie.split(";");
   let tweetCookie;
   cookiesArray.forEach((cookie) => {
-    if (cookie.trim().startsWith("tweets=")) {
-      tweetCookie = cookie.trim().substring(10);
+    if (cookie.trim().startsWith(cookieName)) {
+      tweetCookie = cookie.trim().substring(cookieName.length);
     }
   });
   return tweetCookie;
@@ -53,7 +54,7 @@ const handleSave = (tweet) => {
   const tweetExists = TWEETS.find(({ id }) => id === tweet.id);
   if (!tweetExists) {
     TWEETS.unshift(tweet);
-    document.cookie = `tweets=${JSON.stringify(TWEETS)}`;
+    document.cookie = `${cookieName}${JSON.stringify(TWEETS)}`;
     console.log("saved");
   } else {
     console.log("tweet exists");
@@ -63,7 +64,7 @@ const handleSave = (tweet) => {
 const handleDelete = (tweet) => {
   const filteredTweets = TWEETS.filter(({ id }) => id !== tweet.id);
   TWEETS = [...filteredTweets];
-  document.cookie = `tweets=${JSON.stringify(TWEETS)}`;
+  document.cookie = `${cookieName}${JSON.stringify(TWEETS)}`;
   console.log("deleted");
 };
 
