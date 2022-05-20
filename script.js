@@ -1,39 +1,42 @@
+//API key hopefully will go undetected, ideally would be stored in an environment variable
+//With no backend and vanilla javascript this was the best solution I could find:
 OPENAI_API_KEY = "sk-9iTykVyyk2ySOg3f4pX1T3" + "BlbkFJJnZXDWWanttEQH7YuEjr";
 
 const promptInput = document.getElementById("prompt");
 const submitButton = document.getElementById("submit-button");
 const loadTweetsButton = document.getElementById("load-tweets-button");
-const responsesWrapper = document.getElementById("responses-wrapper");
-const exampleResponse = document.getElementsByClassName("response")[0];
+const tweetsWrapper = document.getElementById("tweets-wrapper");
+const exampleTweet = document.getElementsByClassName("tweet")[0];
 
-let RESPONSES = [];
-let responsesCookie = "";
+let TWEETS = []; //tweets state
+let tweetCookie = "";
 
 const checkIfCookieExists = () => {
   let cookiesArray = document.cookie.split(";");
-  let responsesCookie;
+  let tweetCookie;
   cookiesArray.forEach((cookie) => {
-    if (cookie.trim().startsWith("responses=")) {
-      responsesCookie = cookie.trim().substring(10);
+    if (cookie.trim().startsWith("tweets=")) {
+      tweetCookie = cookie.trim().substring(10);
     }
   });
-  return responsesCookie;
+  return tweetCookie;
 };
 
+//if there are previously saved tweets in the browser will update state and allow load
 if (checkIfCookieExists()) {
-  RESPONSES = JSON.parse(checkIfCookieExists());
+  TWEETS = JSON.parse(checkIfCookieExists());
   loadTweetsButton.classList.remove("hidden");
 }
 
-console.log(RESPONSES);
-//const savedResponses = browser.cookie.get(responses);
-//console.log(savedResponses);
+console.log(TWEETS);
+
+//HANDLERS
 
 const handleSubmit = async () => {
   const prompt = promptInput.value;
   if (prompt !== "") {
-    const newResponse = await arrangeDataIntoResponseObject(prompt);
-    loadNewResponse(newResponse);
+    const newTweet = await arrangeDataIntoTweetObject(prompt);
+    loadNewTweet(newTweet);
     promptInput.value = "";
   } else {
     window.alert("please enter a prompt!");
@@ -46,35 +49,37 @@ const handleTweet = () => {
   );
 };
 
-const handleSave = (response) => {
-  const responseExists = RESPONSES.find(({ id }) => id === response.id);
-  if (!responseExists) {
-    RESPONSES.unshift(response);
-    document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
+const handleSave = (tweet) => {
+  const tweetExists = TWEETS.find(({ id }) => id === tweet.id);
+  if (!tweetExists) {
+    TWEETS.unshift(tweet);
+    document.cookie = `tweets=${JSON.stringify(TWEETS)}`;
     console.log("saved");
   } else {
-    console.log("response exists");
+    console.log("tweet exists");
   }
 };
 
-const handleDelete = (response) => {
-  const filteredResponses = RESPONSES.filter(({ id }) => id !== response.id);
-  RESPONSES = [...filteredResponses];
-  document.cookie = `responses=${JSON.stringify(RESPONSES)}`;
+const handleDelete = (tweet) => {
+  const filteredTweets = TWEETS.filter(({ id }) => id !== tweet.id);
+  TWEETS = [...filteredTweets];
+  document.cookie = `tweets=${JSON.stringify(TWEETS)}`;
   console.log("deleted");
 };
 
 const handleLoadTweets = () => {
-  RESPONSES.forEach((response) => {
-    loadNewResponse(response);
+  TWEETS.forEach((tweet) => {
+    loadNewTweet(tweet);
   });
 };
 
-const arrangeDataIntoResponseObject = async (prompt) => {
+//
+
+const arrangeDataIntoTweetObject = async (prompt) => {
   const data = {
     prompt: prompt,
     temperature: 0.5,
-    max_tokens: 60,
+    max_tokens: 60, //should average 240 characters
     top_p: 1.0,
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
@@ -88,57 +93,18 @@ const arrangeDataIntoResponseObject = async (prompt) => {
     text = result.choices[0].text;
   }
 
-  const responseObject = {
+  const tweetObject = {
     id: Math.floor(Math.random() * 100000000),
     prompt: prompt,
-    response: text,
+    tweet: text,
   };
 
-  return responseObject;
-};
-
-const loadNewResponse = (newResponse) => {
-  const { prompt, response } = newResponse;
-
-  const mostRecentResponse = document.getElementsByClassName("response")[0];
-  const newResponseContainer = mostRecentResponse.cloneNode(true);
-
-  const newPromptText = newResponseContainer.querySelector("#prompt-text");
-  const newResponseText = newResponseContainer.querySelector("#response-text");
-  const newResponseLength =
-    newResponseContainer.querySelector("#response-length");
-
-  const newSaveButton = newResponseContainer.querySelector("#save-button");
-  const newDeleteButton = newResponseContainer.querySelector("#delete-button");
-  const tweetButton = newResponseContainer.querySelector("#tweet-button");
-  newPromptText.innerHTML = prompt;
-  newResponseLength.innerHTML = `(${response.length})`;
-  newResponseText.innerHTML = response;
-
-  newSaveButton.addEventListener("click", () => {
-    handleSave(newResponse);
-  });
-
-  newDeleteButton.addEventListener("click", () => {
-    if (responsesWrapper.children.length !== 1) {
-      handleDelete(newResponse);
-      newResponseContainer.remove();
-    }
-  });
-
-  tweetButton.addEventListener("click", () => {
-    handleTweet(newResponse);
-  });
-
-  responsesWrapper.insertBefore(newResponseContainer, mostRecentResponse);
-  if (exampleResponse) {
-    exampleResponse.remove();
-  }
+  return tweetObject;
 };
 
 const fetchAPI = async (data) => {
   const Url = " https://api.openai.com/v1/engines/text-curie-001/completions";
-  const response = await fetch(Url, {
+  const tweet = await fetch(Url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -147,8 +113,62 @@ const fetchAPI = async (data) => {
     body: JSON.stringify(data),
   });
 
-  return await response.json();
+  return await tweet.json();
 };
+
+const loadNewTweet = (newTweet) => {
+  const { prompt, tweet } = newTweet;
+
+  const mostRecentTweet = document.getElementsByClassName("tweet")[0];
+  const newTweetContainer = mostRecentTweet.cloneNode(true);
+
+  const newPromptText = newTweetContainer.querySelector("#prompt-text");
+  const newTweetText = newTweetContainer.querySelector("#tweet-text");
+  const newTweetLength = newTweetContainer.querySelector("#tweet-length");
+
+  const newSaveButton = newTweetContainer.querySelector("#save-button");
+  const newDeleteButton = newTweetContainer.querySelector("#delete-button");
+  const tweetButton = newTweetContainer.querySelector("#tweet-button");
+
+  //set content
+  newPromptText.innerHTML = prompt;
+  newTweetLength.innerHTML = `(${tweet.length})`;
+  newTweetText.innerHTML = tweet;
+
+  //add functionality
+  newSaveButton.addEventListener("click", () => {
+    handleSave(newTweet);
+    newTweetContainer.classList.add("save");
+    setTimeout(() => {
+      newTweetContainer.classList.remove("popin");
+      newTweetContainer.classList.remove("save");
+    }, 500);
+  });
+
+  newDeleteButton.addEventListener("click", () => {
+    handleDelete(newTweet);
+    newTweetContainer.classList.add("delete");
+    setTimeout(() => {
+      console.log(tweetsWrapper.children.length);
+      if (tweetsWrapper.children.length === 2) {
+        exampleTweet.classList.remove("hidden");
+      }
+      newTweetContainer.remove();
+    }, 500);
+  });
+
+  tweetButton.addEventListener("click", () => {
+    handleTweet(newTweet);
+  });
+
+  //add to DOM
+  tweetsWrapper.insertBefore(newTweetContainer, mostRecentTweet);
+  if (exampleTweet) {
+    exampleTweet.classList.add("hidden");
+  }
+};
+
+//event listeners
 
 submitButton.addEventListener("click", handleSubmit);
 

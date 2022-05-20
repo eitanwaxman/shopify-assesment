@@ -1,1 +1,1 @@
-This is the Readme file for this project
+Welcome to AI Tweet Generator!

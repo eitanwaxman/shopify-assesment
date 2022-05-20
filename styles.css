@@ -104,28 +104,106 @@ input:focus {
   background-color: transparent;
 }
 
-.responses-wrapper {
+.tweets-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
 }
 
-.response {
+.tweet {
   margin: 10px;
   padding: 15px;
   width: 400px;
-  border-radius: 15px;
+  border-radius: 13px;
   box-shadow: 1px 1px 3px 1px lightgray;
-  background-image: linear-gradient(#e1eff7, white, white);
+  background-image: linear-gradient(
+    to bottom,
+    #1da1f2 8px,
+    #e1eff7 8px,
+    white,
+    white
+  );
+}
+
+/* ANIMATIONS */
+
+.popin {
+  animation: popin 0.5s;
+}
+
+.popin-text * {
+  animation: popin 0.5s;
+}
+
+.save {
+  animation: save 0.5s;
+}
+
+.delete {
+  animation: delete 0.5s;
 }
 
 .hidden {
   display: none;
 }
 
+#save-button span:hover {
+  color: rgb(0, 194, 0);
+}
+
+#delete-button span:hover {
+  color: rgb(255, 55, 0);
+}
+
+@keyframes popin {
+  from {
+    height: 0;
+    width: 0;
+    font-size: 0;
+    color: transparent;
+  }
+
+  to {
+    width: 400px;
+    height: fit-content;
+  }
+}
+
+@keyframes save {
+  from {
+    box-shadow: 1px 1px 3px 1px lightgray;
+  }
+
+  50% {
+    box-shadow: 1px 1px 3px 1px rgb(0, 194, 0);
+  }
+
+  to {
+    box-shadow: 1px 1px 3px 1px lightgray;
+  }
+}
+
+@keyframes delete {
+  from {
+    box-shadow: 1px 1px 3px 1px lightgray;
+  }
+
+  20% {
+    box-shadow: 1px 1px 3px 1px rgb(255, 55, 0);
+  }
+
+  to {
+    box-shadow: 1px 1px 3px 1px lightgray;
+    color: transparent;
+    background-color: transparent;
+  }
+}
+
+/* MOBILE STYLES */
+
 @media only screen and (max-width: 600px) {
-  .response {
+  .tweet {
     width: 80vw;
   }
 }

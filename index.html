@@ -38,8 +38,8 @@
     <button class="secondary-button hidden" id="load-tweets-button">
       Load Saved Tweets
     </button>
-    <div class="responses-wrapper" id="responses-wrapper">
-      <div class="response">
+    <div class="tweets-wrapper" id="tweets-wrapper">
+      <div class="tweet popin">
         <div class="icon-button-wrapper">
           <button class="icon-button" id="save-button">
             <span class="material-symbols-outlined"> save </span>
@@ -48,15 +48,17 @@
             <span class="material-symbols-outlined"> delete </span>
           </button>
         </div>
-        <h4>Your Prompt</h4>
-        <p id="prompt-text">Write me a tweet about tweets</p>
-        <h3>AI Tweet</h3>
-        <span id="response-length">(186)</span>
-        <p id="response-text">
-          Tweets are like tiny little messages that you can send out to the
-          world. They're a fun way to share your thoughts and ideas, and they
-          can spread quickly. So why not start tweeting today?
-        </p>
+        <div class="popin-text">
+          <h4>Your Prompt</h4>
+          <p id="prompt-text">Write me a tweet about tweets (example)</p>
+          <h3>AI Tweet</h3>
+          <span id="tweet-length">(186)</span>
+          <p id="tweet-text">
+            Tweets are like tiny little messages that you can send out to the
+            world. They're a fun way to share your thoughts and ideas, and they
+            can spread quickly. So why not start tweeting today?
+          </p>
+        </div>
         <button id="tweet-button" class="primary-button">
           Tweet <i class="fab fa-twitter"></i>
         </button>
