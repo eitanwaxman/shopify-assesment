@@ -31,7 +31,7 @@ if (checkIfCookieExists()) {
   }
 }
 
-console.log(TWEETS);
+//console.log(TWEETS);
 
 //HANDLERS
 
@@ -152,7 +152,6 @@ const loadNewTweet = (newTweet) => {
     handleDelete(newTweet);
     newTweetContainer.classList.add("delete");
     setTimeout(() => {
-      console.log(tweetsWrapper.children.length);
       if (tweetsWrapper.children.length === 2) {
         exampleTweet.classList.remove("hidden");
       }
