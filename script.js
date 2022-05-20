@@ -26,7 +26,9 @@ const checkIfCookieExists = () => {
 //if there are previously saved tweets in the browser will update state and allow load
 if (checkIfCookieExists()) {
   TWEETS = JSON.parse(checkIfCookieExists());
-  loadTweetsButton.classList.remove("hidden");
+  if (TWEETS.length > 0) {
+    loadTweetsButton.classList.remove("hidden");
+  }
 }
 
 console.log(TWEETS);
