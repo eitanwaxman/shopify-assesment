@@ -1,7 +1,3 @@
-//API key hopefully will go undetected, ideally would be stored in an environment variable
-//With no backend and vanilla javascript this was the best solution I could find:
-OPENAI_API_KEY = "sk-9iTykVyyk2ySOg3f4pX1T3" + "BlbkFJJnZXDWWanttEQH7YuEjr";
-
 const promptInput = document.getElementById("prompt");
 const submitButton = document.getElementById("submit-button");
 const loadTweetsButton = document.getElementById("load-tweets-button");
@@ -30,8 +26,6 @@ if (checkIfCookieExists()) {
     loadTweetsButton.classList.remove("hidden");
   }
 }
-
-//console.log(TWEETS);
 
 //HANDLERS
 
@@ -79,7 +73,7 @@ const handleLoadTweets = () => {
 //
 
 const arrangeDataIntoTweetObject = async (prompt) => {
-  const data = {
+  const userInput = {
     prompt: prompt,
     temperature: 0.5,
     max_tokens: 60, //should average 240 characters
@@ -87,12 +81,12 @@ const arrangeDataIntoTweetObject = async (prompt) => {
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
   };
-  let result = await fetchAPI(data);
+  let result = await fetchTweet(userInput);
   let { text } = result.choices[0];
 
   //saftey clause to ensure that character limit stays under Max 240
   while (text.length > 240) {
-    result = await fetchAPI(data);
+    result = await fetchTweet(userInput);
     text = result.choices[0].text;
   }
 
@@ -105,17 +99,14 @@ const arrangeDataIntoTweetObject = async (prompt) => {
   return tweetObject;
 };
 
-const fetchAPI = async (data) => {
-  const Url = " https://api.openai.com/v1/engines/text-curie-001/completions";
-  const tweet = await fetch(Url, {
+const fetchTweet = async (userInput) => {
+  const tweet = await fetch("/tweet", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(userInput),
   });
-
   return await tweet.json();
 };
 
